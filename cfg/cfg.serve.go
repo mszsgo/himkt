@@ -5,7 +5,7 @@ type serveCfg struct {
 	Port int64
 }
 
-func (c *Cfg) Serve() *serveCfg {
+func Serve() *serveCfg {
 	return &serveCfg{
 		Port: 80,
 	}

@@ -5,6 +5,6 @@ package cfg
 type ossCfg struct {
 }
 
-func (c *Cfg) Oss() *ossCfg {
+func Oss() *ossCfg {
 	return &ossCfg{}
 }

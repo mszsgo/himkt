@@ -9,11 +9,6 @@ import (
 	"time"
 )
 
-type Cfg struct {
-}
-
-var CFG = &Cfg{}
-
 // 加载配置
 func LoadConfig(name string) ([]byte, error) {
 	client := &http.Client{

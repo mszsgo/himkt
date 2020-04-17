@@ -5,6 +5,6 @@ package cfg
 type logCfg struct {
 }
 
-func (c *Cfg) Log() *logCfg {
+func Log() *logCfg {
 	return &logCfg{}
 }
