@@ -33,11 +33,12 @@ var CtxFeign = &Feign{
 }
 
 // 用于网关调用接口
-func (df *Feign) Do(method string, body string) ([]byte, error) {
+func (df *Feign) Do(method string, body string, token string) ([]byte, error) {
 	request, err := http.NewRequest("POST", "http://"+strings.Split(method, ".")[1]+"/"+method, strings.NewReader(body))
 	if err != nil {
 		return nil, err
 	}
+	request.Header.Set("AccessToken", token)
 	response, err := df.client.Do(request)
 	if err != nil {
 		return nil, err
