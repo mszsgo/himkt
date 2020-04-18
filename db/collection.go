@@ -15,7 +15,7 @@ func Find(c CollectionInterface, result interface{}, ctx context.Context, filter
 	if err != nil {
 		return
 	}
-	err = cursor.Decode(result)
+	err = cursor.All(ctx, result)
 	if err != nil {
 		return
 	}
