@@ -3,7 +3,7 @@ package hm
 import (
 	"encoding/json"
 	"errors"
-	"github.com/mszsgo/himkt"
+	"github.com/mszsgo/himkt/env"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -17,13 +17,13 @@ type Feign struct {
 
 var CtxFeign = &Feign{
 	client: func() *http.Client {
-		if himkt.HM_HTTP_PROXY == "" {
+		if env.HM_HTTP_PROXY == "" {
 			return http.DefaultClient
 		}
 		return &http.Client{
 			Transport: &http.Transport{
 				Proxy: func(request *http.Request) (url *url.URL, err error) {
-					request.URL.Host = himkt.HM_HTTP_PROXY
+					request.URL.Host = env.HM_HTTP_PROXY
 					return request.URL, err
 				},
 			},
@@ -72,7 +72,7 @@ func (df *Feign) Call(method string, i interface{}, o interface{}) (err error) {
 	if err != nil {
 		return err
 	}
-	resp, err := df.Do(method, string(bytes))
+	resp, err := df.Do(method, string(bytes), "")
 	if err != nil {
 		return err
 	}
