@@ -3,6 +3,7 @@ package cfg
 import (
 	"encoding/json"
 	"github.com/mszsgo/himkt/env"
+	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -41,13 +42,13 @@ func LoadConfig(name string) ([]byte, error) {
 func NowConfig(name string, v interface{}) {
 	bytes, err := LoadConfig(name)
 	if err != nil {
+		log.Error("加载配置"+name+"失败", err.Error())
 		panic(err)
-		return
 	}
 	err = json.Unmarshal(bytes, v)
 	if err != nil {
+		log.Error("加载配置"+name+"失败", err.Error())
 		panic(err)
-		return
 	}
 	return
 }
