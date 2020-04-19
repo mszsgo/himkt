@@ -63,6 +63,8 @@ func (p *ResolveParams) BodyUnmarshal(i interface{}) {
 }
 
 func DefApi(pattern string, resolve func(p *ResolveParams) (out interface{}, err error)) {
+	// TODO pattern值非/开头的，拼接/符号
+
 	http.Handle(pattern, post(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		defer func() {
 			if e := recover(); e != nil {
