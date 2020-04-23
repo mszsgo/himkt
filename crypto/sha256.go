@@ -1,4 +1,4 @@
-package himkt
+package crypto
 
 import (
 	"crypto/sha256"
