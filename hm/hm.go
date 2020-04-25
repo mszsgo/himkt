@@ -14,7 +14,6 @@ var (
 )
 
 func ResponseSuccess(writer http.ResponseWriter, i interface{}) {
-	writer.WriteHeader(200)
 	if i == nil {
 		return
 	}
@@ -22,6 +21,8 @@ func ResponseSuccess(writer http.ResponseWriter, i interface{}) {
 	if err != nil {
 		panic(err)
 	}
+
+	writer.WriteHeader(200)
 	writer.Write(bytes)
 }
 
