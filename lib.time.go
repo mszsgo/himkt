@@ -8,7 +8,7 @@ import (
 )
 
 // 定义Time 与 JSON互转的格式
-
+// RFC3339
 type Time time.Time
 
 // MarshalJSON implements the json.Marshaler interface.
