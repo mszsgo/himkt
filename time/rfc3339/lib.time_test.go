@@ -1,4 +1,4 @@
-package time
+package rfc3339
 
 import (
 	"testing"
