@@ -3,12 +3,10 @@ package hm
 import (
 	"encoding/json"
 	"errors"
-	"github.com/mszsgo/himkt/env"
+	"github.com/mszsgo/himkt/protocol"
 	"io/ioutil"
 	"net/http"
-	"net/url"
 	"strings"
-	"time"
 )
 
 type Feign struct {
@@ -16,20 +14,7 @@ type Feign struct {
 }
 
 var CtxFeign = &Feign{
-	client: func() *http.Client {
-		if env.HM_HTTP_PROXY == "" {
-			return http.DefaultClient
-		}
-		return &http.Client{
-			Transport: &http.Transport{
-				Proxy: func(request *http.Request) (url *url.URL, err error) {
-					request.URL.Host = env.HM_HTTP_PROXY
-					return request.URL, err
-				},
-			},
-			Timeout: 5 * time.Second,
-		}
-	}(),
+	client: protocol.HttpClient(),
 }
 
 // 用于网关调用接口

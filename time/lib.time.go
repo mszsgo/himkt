@@ -1,4 +1,4 @@
-package himkt
+package time
 
 import (
 	"errors"
