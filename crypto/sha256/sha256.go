@@ -1,11 +1,11 @@
-package crypto
+package sha256
 
 import (
 	"crypto/sha256"
 	"fmt"
 )
 
-// Sha256 z转16进制输出字符串
-func Sha256(v string) string {
+// Sha256 转16进制输出字符串
+func EncodeToHex(v string) string {
 	return fmt.Sprintf("%x", sha256.Sum256([]byte(v)))
 }
