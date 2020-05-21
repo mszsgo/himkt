@@ -10,11 +10,11 @@ import (
 	"time"
 )
 
-type aliyunSlsHook struct {
+type AliyunSlsHook struct {
 	AliyunSls *AliyunSls
 }
 
-func (hook *aliyunSlsHook) Fire(entry *logrus.Entry) error {
+func (hook *AliyunSlsHook) Fire(entry *logrus.Entry) error {
 	bytes, err := entry.Bytes()
 	if err != nil {
 		return err
@@ -29,7 +29,7 @@ func (hook *aliyunSlsHook) Fire(entry *logrus.Entry) error {
 	return nil
 }
 
-func (hook *aliyunSlsHook) Levels() []logrus.Level {
+func (hook *AliyunSlsHook) Levels() []logrus.Level {
 	return logrus.AllLevels
 }
 

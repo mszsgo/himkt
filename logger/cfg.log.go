@@ -1,6 +1,9 @@
 package logger
 
-import "github.com/mszsgo/himkt/cfg"
+import (
+	"fmt"
+	"github.com/mszsgo/himkt/cfg"
+)
 
 // 阿里云日志服务接入
 
@@ -10,6 +13,10 @@ type logCfg struct {
 
 func LogCfg() *logCfg {
 	var l *logCfg
-	cfg.NowConfig("log", &l)
+	err := cfg.NowConfig("log", &l)
+	if err != nil {
+		fmt.Println("error: " + err.Error())
+		return nil
+	}
 	return l
 }

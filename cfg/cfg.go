@@ -2,6 +2,7 @@ package cfg
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/mszsgo/himkt/env"
 	"github.com/mszsgo/himkt/protocol"
@@ -18,23 +19,29 @@ func LoadConfig(name string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	if resp.StatusCode != 200 {
+		return nil, errors.New(resp.Status)
+	}
 	bytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
+	if len(bytes) == 0 {
+		return nil, errors.New("没有读取到配置信息")
+	}
 	return bytes, nil
 }
 
-func NowConfig(name string, v interface{}) {
+func NowConfig(name string, v interface{}) error {
 	bytes, err := LoadConfig(name)
 	if err != nil {
 		fmt.Printf("Error:加载配置"+name+"失败 %s", err.Error())
-		panic(err)
+		return err
 	}
 	err = json.Unmarshal(bytes, v)
 	if err != nil {
 		fmt.Printf("Error:加载配置"+name+"失败 %s", err.Error())
-		panic(err)
+		return err
 	}
-	return
+	return nil
 }
