@@ -22,3 +22,11 @@ func Find(c *mongo.Collection, result interface{}, ctx context.Context, filter i
 	}
 	return
 }
+
+func Page(c *mongo.Collection, result interface{}, ctx context.Context, filter interface{}, opts ...*options.FindOptions) (total int64, err error) {
+	err = Find(c, result, ctx, filter, opts...)
+	if err != nil {
+		return 0, err
+	}
+	return c.CountDocuments(ctx, filter)
+}
