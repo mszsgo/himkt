@@ -8,6 +8,7 @@ import (
 // 阿里云日志服务接入
 
 type logCfg struct {
+	Level  string     `json:"level"` // debug  info  warn  error
 	Aliyun *AliyunSls `json:"aliyun"`
 }
 
@@ -17,6 +18,9 @@ func LogCfg() *logCfg {
 	if err != nil {
 		fmt.Println("error: " + err.Error())
 		return nil
+	}
+	if l.Level == "" {
+		l.Level = "info"
 	}
 	return l
 }

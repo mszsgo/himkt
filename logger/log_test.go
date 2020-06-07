@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-var log = New("test")
+var log = Now("test")
 
 func TestLog(t *testing.T) {
 	log.WithField("method", "hm.test.query").Info("测试日志")

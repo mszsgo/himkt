@@ -1,6 +1,9 @@
 package hm
 
-import "testing"
+import (
+	"encoding/json"
+	"testing"
+)
 
 func TestEncryptDesMd5(t *testing.T) {
 	key := "12345678"
@@ -25,4 +28,33 @@ func TestEncryptDesMd5(t *testing.T) {
 		return
 	}
 	t.Log(v)
+}
+
+type S1 struct {
+	Aa string `json:"aa"`
+}
+
+type S2 struct {
+	Bb string `json:"bb"`
+	S1
+}
+
+func TestJ(t *testing.T) {
+	v := &S2{Bb: "123", S1: S1{Aa: "321"}}
+	b, _ := json.Marshal(v)
+	t.Log(string(b))
+
+	var s2 *S2
+	jv := []byte(`{"bb":"123","aa":"321"}`)
+	json.Unmarshal(jv, &s2)
+	s2b, _ := json.Marshal(s2)
+
+	s2b = []byte("{}")
+	suc := `{"errno":"00000","error":"ok"}`
+	if len(s2b) > 2 {
+		s2b = append([]byte(suc[0:len(suc)-1]+","), s2b[1:]...)
+	} else {
+		s2b = []byte(suc)
+	}
+	t.Log(string(s2b))
 }
