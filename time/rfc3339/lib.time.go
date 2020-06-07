@@ -11,6 +11,10 @@ import (
 // RFC3339
 type Time time.Time
 
+func (nt Time) String() string {
+	return time.Time(nt).Local().Format(time.RFC3339)
+}
+
 // MarshalJSON implements the json.Marshaler interface.
 // The time is a quoted string in RFC 3339 format, with sub-second precision added if present.
 func (nt Time) MarshalJSON() ([]byte, error) {
