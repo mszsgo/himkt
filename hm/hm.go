@@ -97,7 +97,7 @@ func DefApi(pattern string, resolve func(p *ResolveParams) (out interface{}, err
 				ResponseFail(writer, err)
 			}
 			endTime := time.Now().UnixNano() / 1e6
-			log.WithField("method", pattern[1:]).WithField("time", endTime-begTime).Info("毫秒")
+			log.WithField("method", pattern[1:]).WithField("milliseconds", endTime-begTime).Info("毫秒")
 		}()
 
 		h := request.Header
