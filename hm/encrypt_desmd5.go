@@ -61,6 +61,10 @@ func EncryptDesMd5(s, key string) (v string, err error) {
 
 // DES+MD5接口报文解密
 func DecryptDesMd5(s, key string) (v string, err error) {
+	if len(s) < 32 {
+		err = errors.New("Error:Ciphertext format error")
+		return
+	}
 	m1 := s[0:32]
 	s2 := s[32:]
 
