@@ -5,6 +5,7 @@ type serveCfg struct {
 	Port int64
 }
 
+// @deprecated
 func Serve() *serveCfg {
 	return &serveCfg{
 		Port: 80,
