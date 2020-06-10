@@ -6,6 +6,7 @@ require (
 	github.com/aliyun/aliyun-log-go-sdk v0.1.8
 	github.com/frankban/quicktest v1.9.0 // indirect
 	github.com/go-kit/kit v0.10.0 // indirect
+	github.com/go-redis/redis/v8 v8.0.0-beta.4
 	github.com/gogo/protobuf v1.3.1 // indirect
 	github.com/golang/protobuf v1.4.0 // indirect
 	github.com/google/uuid v1.0.0
