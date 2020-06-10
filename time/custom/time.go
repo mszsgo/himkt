@@ -1,4 +1,4 @@
-package ymdhms
+package custom
 
 import (
 	"errors"
