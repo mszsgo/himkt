@@ -1,4 +1,4 @@
-package redis
+package rdb
 
 import (
 	"context"
@@ -16,9 +16,10 @@ func TestA(t *testing.T) {
 
 	rdb := redis.NewClient(opt)
 
-	v, err := rdb.Get(context.Background(), "k1").Result()
-	if err != nil {
+	v := rdb.Get(context.TODO(), "k1").Val()
+	/*if err != nil {
 		panic(err)
-	}
+	}*/
 	t.Log(v)
+
 }
