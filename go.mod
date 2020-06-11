@@ -20,4 +20,5 @@ require (
 	golang.org/x/net v0.0.0-20200501053045-e0ff5e5a1de5 // indirect
 	golang.org/x/sync v0.0.0-20200317015054-43a5402ce75a // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
+	github.com/mszsgo/snowflake v0.3.0
 )
