@@ -17,7 +17,8 @@ type Error500 struct {
 }
 
 func Do(ctx context.Context, method string, body string) ([]byte, error) {
-	request, err := http.NewRequest("POST", "http://"+strings.Split(method, ".")[1]+"/"+method, strings.NewReader(body))
+	name := strings.Split(method, ".")[1]
+	request, err := http.NewRequest("POST", "http://"+name+"/"+method, strings.NewReader(body))
 	if err != nil {
 		return nil, err
 	}
@@ -55,9 +56,9 @@ func Do(ctx context.Context, method string, body string) ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		return nil, errors.New(e500.Errno + ":" + e500.Error)
+		return nil, errors.New(e500.Errno + ":" + name + " > " + e500.Error)
 	}
-	return nil, errors.New("99999:Gateway->API异常(" + response.Status + ")，请检查业务服务")
+	return nil, errors.New("99999:Feign->API异常(" + response.Status + ")，请检查业务服务")
 }
 
 func Call(ctx context.Context, method string, i interface{}, o interface{}) (err error) {
