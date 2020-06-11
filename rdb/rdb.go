@@ -34,3 +34,10 @@ func (k KeyPre) Set(key, value string, second int64) error {
 func (k KeyPre) Get(key string) string {
 	return k.DB().Get(context.TODO(), string(k)+key).Val()
 }
+
+func (k KeyPre) Equal(key string, val string) bool {
+	if k.Get(key) == val {
+		return true
+	}
+	return false
+}
