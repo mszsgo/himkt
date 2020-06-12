@@ -2,6 +2,7 @@ package errs
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
 )
 
@@ -21,6 +22,14 @@ func NewF(err error) *Err {
 		return &Err{Code: "ERROR", Msg: e}
 	}
 	return &Err{Code: e[0:i], Msg: e[i+1:]}
+}
+
+func (e *Err) NewMsg(msg string) *Err {
+	return New(e.Code, msg)
+}
+
+func (e *Err) NewMsgF(args ...string) *Err {
+	return New(e.Code, fmt.Sprintf(e.Msg, args))
 }
 
 func (e *Err) Error() string {
