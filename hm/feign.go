@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"github.com/google/uuid"
+	"github.com/mszsgo/himkt/genid"
 	"github.com/mszsgo/himkt/protocol"
 	"io/ioutil"
 	"net/http"
@@ -31,7 +31,6 @@ func Do(ctx context.Context, method string, body string) ([]byte, error) {
 			track := ctxTrack.(*Track)
 			request.Header.Set("sid", track.Sid)
 			request.Header.Set("pid", track.Tid)
-			request.Header.Set("tid", uuid.New().String())
 		}
 
 		ctxClient := ctx.Value("client")
@@ -39,6 +38,7 @@ func Do(ctx context.Context, method string, body string) ([]byte, error) {
 			client = ctxClient.(*http.Client)
 		}
 	}
+	request.Header.Set("tid", genid.UUID())
 	response, err := client.Do(request)
 	if err != nil {
 		return nil, err
