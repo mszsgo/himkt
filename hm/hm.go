@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/google/uuid"
-	"github.com/mszsgo/himkt/errs"
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
@@ -18,9 +16,9 @@ var (
 	ERR_HTTP_METHOD = errors.New("99999:请使用HTTP POST请求")
 )
 
-func ResponseSuccess(writer http.ResponseWriter, i interface{}) {
+func ResponseSuccess(i interface{}) []byte {
 	if i == nil {
-		return
+		return []byte("")
 	}
 	bytes, err := json.Marshal(i)
 	if err != nil {
@@ -32,25 +30,28 @@ func ResponseSuccess(writer http.ResponseWriter, i interface{}) {
 	} else {
 		bytes = []byte(suc)
 	}
-	writer.WriteHeader(200)
-	writer.Write(bytes)
+	return bytes
 }
 
-func ResponseFail(writer http.ResponseWriter, err error) {
-	writer.WriteHeader(500)
+func ResponseFail(err error) []byte {
 	msg := err.Error()
 	if msg[5:6] == ":" {
-		writer.Write([]byte(fmt.Sprintf(`{"errno":"%s","error":"%s"}`, msg[0:5], msg[6:])))
+		return []byte(fmt.Sprintf(`{"errno":"%s","error":"%s"}`, msg[0:5], msg[6:]))
 	} else {
-		writer.Write([]byte(fmt.Sprintf(`{"errno":"%s","error":"%s"}`, "99999", msg)))
+		return []byte(fmt.Sprintf(`{"errno":"%s","error":"%s"}`, "99999", msg))
 	}
+}
+
+func ResponseWriter(writer http.ResponseWriter, status int, content []byte) {
+	writer.Write(content)
+	writer.WriteHeader(status)
 }
 
 func post(handle http.Handler) http.Handler {
 	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "application/json;charset=utf-8")
 		if request.Method != "POST" {
-			ResponseFail(writer, ERR_HTTP_METHOD)
+			ResponseWriter(writer, 500, ResponseFail(ERR_HTTP_METHOD))
 			return
 		}
 		handle.ServeHTTP(writer, request)
@@ -82,6 +83,11 @@ func (p *ResolveParams) BodyUnmarshal(i interface{}) {
 func DefApi(pattern string, resolve func(p *ResolveParams) (out interface{}, err error)) {
 	http.Handle(pattern, post(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		begTime := time.Now().UnixNano() / 1e6
+
+		h := request.Header
+		track := &Track{Sid: h.Get("sid"), Pid: h.Get("pid"), Tid: h.Get("tid")}
+		hlog := log.WithField("sid", track.Sid).WithField("pid", track.Pid).WithField("tid", track.Tid).WithField("method", pattern[1:])
+
 		defer func() {
 			if e := recover(); e != nil {
 				var err error
@@ -95,26 +101,27 @@ func DefApi(pattern string, resolve func(p *ResolveParams) (out interface{}, err
 				default:
 					err = errors.New(fmt.Sprintf("ERROR:未知错误类型 %v ", v))
 				}
-				ResponseFail(writer, err)
+				resBytes := ResponseFail(err)
+				hlog.WithField("responseBody", string(resBytes)).Info("响应报文")
+				ResponseWriter(writer, 500, resBytes)
 			}
 			endTime := time.Now().UnixNano() / 1e6
-			log.WithField("method", pattern[1:]).WithField("milliseconds", strconv.FormatInt(endTime-begTime, 10)).Info("毫秒")
+			hlog.WithField("milliseconds", strconv.FormatInt(endTime-begTime, 10)).Info("毫秒")
 		}()
-
-		h := request.Header
-		// 创建新的轨
-		track := &Track{Sid: h.Get("sid"), Pid: h.Get("pid"), Tid: h.Get("tid")}
 
 		// 调用业务方法
 		body, err := ioutil.ReadAll(request.Body)
 		if err != nil {
 			panic(err)
 		}
+		hlog.WithField("requestBody", string(body)).Info("请求报文")
 		i, e := resolve(&ResolveParams{Body: body, Request: request, Writer: writer, Context: context.WithValue(context.Background(), "track", track)})
 		if e != nil {
 			panic(e)
 		}
-		ResponseSuccess(writer, i)
+		resBytes := ResponseSuccess(i)
+		hlog.WithField("responseBody", string(resBytes)).Info("响应报文")
+		ResponseWriter(writer, 200, resBytes)
 	})))
 }
 
@@ -136,18 +143,4 @@ type ResponseHeader struct {
 	Method     string `json:"method"`
 	RequestId  string `json:"requestId"`
 	SubmitTime string `json:"submitTime"`
-}
-
-func NewResponseHeader(header RequestHeader, err error) ResponseHeader {
-	e := errs.NewF(err)
-	return ResponseHeader{
-		Errno:      e.Code,
-		Error:      e.Error(),
-		HostTime:   time.Now().String(),
-		HostNo:     uuid.New().String(),
-		Appid:      header.Appid,
-		Method:     header.Method,
-		RequestId:  header.RequestId,
-		SubmitTime: header.SubmitTime,
-	}
 }
