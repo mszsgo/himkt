@@ -3,6 +3,7 @@ package genid
 import (
 	"log"
 	"testing"
+	"time"
 )
 
 func TestGenId(t *testing.T) {
@@ -11,4 +12,13 @@ func TestGenId(t *testing.T) {
 		log.Println(GenId())
 		//log.Println(rand.Int63n(31))
 	}
+}
+
+func TestA(t *testing.T) {
+
+	et := time.Duration(1592304944216)
+	t.Log(time.Now().Unix())
+
+	tt := time.Now().Add(et * time.Millisecond)
+	log.Println(tt.Format(time.RFC3339))
 }

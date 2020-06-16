@@ -8,22 +8,22 @@ type Tcc interface {
 	Cancel() error
 }
 
-// TCC事务，确认与取消操作重试3次
-func Transaction(tcc Tcc) {
+// TCC事务，确认与取消操作重试3次 ，返回异常代表预操作有异常
+func Transaction(tcc Tcc) error {
 	retry := 3
 	err := tcc.Try()
 	if err != nil {
 		for i := 0; i < retry; i++ {
-			err = tcc.Cancel()
-			if err == nil {
+			e := tcc.Cancel()
+			if e == nil {
 				break
 			}
 		}
-		return
+		return err
 	}
 	for i := 0; i < retry; i++ {
-		err = tcc.Confirm()
-		if err == nil {
+		e := tcc.Confirm()
+		if e == nil {
 			break
 		}
 	}
