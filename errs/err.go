@@ -28,8 +28,8 @@ func (e *Err) NewMsg(msg string) *Err {
 	return New(e.Code, msg)
 }
 
-func (e *Err) NewMsgF(args ...string) *Err {
-	return New(e.Code, fmt.Sprintf(e.Msg, args))
+func (e *Err) NewMsgF(args ...interface{}) *Err {
+	return New(e.Code, fmt.Sprintf(e.Msg, args...))
 }
 
 func (e *Err) Error() string {
