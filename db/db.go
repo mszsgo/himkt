@@ -8,6 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"strings"
+	"time"
 )
 
 var _db = make(map[string]*mongo.Database)
@@ -40,4 +41,20 @@ func Connect(connectionString string) *mongo.Database {
 
 	_db[connectionString] = database
 	return database
+}
+
+var _collection_tx = make(map[string]bool)
+
+func Collection(uri, name string) *mongo.Collection {
+	c := Connect(uri).Collection(name)
+
+	// 第一次加载判断集合中是否存在数据，因事务操作不允许空集合
+	if !_collection_tx[name] {
+		count, _ := c.CountDocuments(nil, bson.M{}, options.Count().SetLimit(1))
+		if count == 0 {
+			c.InsertOne(nil, bson.M{"createdAt": time.Now()})
+		}
+		_collection_tx[name] = true
+	}
+	return c
 }
