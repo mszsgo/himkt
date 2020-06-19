@@ -44,7 +44,9 @@ func ResponseFail(err error) []byte {
 
 func ResponseWriter(writer http.ResponseWriter, status int, content []byte) {
 	writer.Write(content)
-	writer.WriteHeader(status)
+	if status != 200 {
+		writer.WriteHeader(status)
+	}
 }
 
 func post(handle http.Handler) http.Handler {

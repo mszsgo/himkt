@@ -41,3 +41,7 @@ func (k KeyPre) Equal(key string, val string) bool {
 	}
 	return false
 }
+
+func (k KeyPre) Inc(key string) int64 {
+	return k.DB().Incr(context.TODO(), string(k)+key).Val()
+}
