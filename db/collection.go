@@ -14,11 +14,9 @@ func Find(c *mongo.Collection, result interface{}, ctx context.Context, filter i
 	if cursor.Err() != nil {
 		return cursor.Err()
 	}
-	if cursor.Next(ctx) {
-		err = cursor.All(ctx, result)
-		if err != nil {
-			return err
-		}
+	err = cursor.All(ctx, result)
+	if err != nil {
+		return err
 	}
 	return
 }

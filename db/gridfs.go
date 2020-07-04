@@ -7,6 +7,8 @@ import (
 	"io"
 )
 
+// 文档：https://godoc.org/go.mongodb.org/mongo-driver/mongo/gridfs
+
 // GridFS 上传文件
 func FSUpload(db *mongo.Database, filename string, fileBytes []byte) (fileId string, err error) {
 	bucket, err := gridfs.NewBucket(db)
