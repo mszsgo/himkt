@@ -8,7 +8,7 @@ import (
 
 func TestGenId(t *testing.T) {
 	//g, _ := snowflake.NewNode(int64(1))
-	for i := 0; i < 10000; i++ {
+	for i := 0; i < 100; i++ {
 		log.Println(GenId())
 		//log.Println(rand.Int63n(31))
 	}
