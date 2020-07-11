@@ -31,7 +31,7 @@ func Get(token string) (uid string) {
 // 验证token,判断token对应的内容是否等于用户编号
 func Verify(token, uid string) error {
 	v := RKEY_TOKEN.Get(token)
-	if v != "" && v != uid {
+	if v == "" || (v != "" && v != uid) {
 		return errs.E99911
 	}
 	return nil
