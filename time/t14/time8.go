@@ -11,6 +11,10 @@ const (
 	YYYYMMDD = "20060102"
 )
 
+func NowF8() string {
+	return Time8(time.Now()).String()
+}
+
 type Time8 time.Time
 
 func (nt Time8) String() string {

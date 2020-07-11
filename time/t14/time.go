@@ -11,6 +11,10 @@ const (
 	YYYYMMDDHHMMSS = "20060102150405"
 )
 
+func NowF14() string {
+	return Time(time.Now()).String()
+}
+
 type Time time.Time
 
 func (nt Time) String() string {
