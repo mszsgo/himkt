@@ -1,4 +1,4 @@
-package unionpay
+package hmunionpay
 
 import (
 	"context"
