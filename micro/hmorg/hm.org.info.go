@@ -28,6 +28,6 @@ type HmOrgInfoResult struct {
 	Brand         string `json:"brand"`         // 品牌名称
 	Logo          string `json:"logo"`          // 品牌LOGO 图片URL
 	WeixinMchId   string `json:"weixinMchId"`   // 微信接入商户编号
-	UnionpayMchId string `json:"UnionpayMchId"` // 云闪付接入商户编号
+	UnionpayMchId string `json:"unionpayMchId"` // 云闪付接入商户编号
 	AlipayMchId   string `json:"alipayMchId"`   // 支付宝接入商户编号
 }
