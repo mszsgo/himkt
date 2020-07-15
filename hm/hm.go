@@ -83,6 +83,9 @@ func (p *ResolveParams) BodyUnmarshal(i interface{}) {
 
 // 定义接口，注意：pattern必须/开头
 func DefApi(pattern string, resolve func(p *ResolveParams) (out interface{}, err error)) {
+	if pattern == "" || resolve == nil {
+		return
+	}
 	http.Handle(pattern, post(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		begTime := time.Now().UnixNano() / 1e6
 
