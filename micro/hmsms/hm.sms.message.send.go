@@ -2,12 +2,12 @@ package hmsms
 
 import (
 	"context"
-	"github.com/mszsgo/himkt/hm"
+	"github.com/mszsgo/himkt/micro"
 )
 
 // 用于发送验证码类短信
 func HmSmsMessageSend(ctx context.Context, params *HmSmsMessageSendParams) (result *HmSmsMessageSendResult, err error) {
-	err = hm.Call(ctx, "hm.sms.message.send", params, &result)
+	err = micro.Call(ctx, "hm.sms.message.send", params, &result)
 	return
 }
 
