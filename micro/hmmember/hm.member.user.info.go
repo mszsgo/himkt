@@ -2,11 +2,11 @@ package hmmember
 
 import (
 	"context"
-	"github.com/mszsgo/himkt/hm"
+	"github.com/mszsgo/himkt/micro"
 )
 
 func HmMemberUserInfo(ctx context.Context, params *HmMemberUserInfoParams) (result *HmMemberUserInfoResult, err error) {
-	err = hm.Call(ctx, "hm.member.user.info", params, &result)
+	err = micro.Call(ctx, "hm.member.user.info", params, &result)
 	return
 }
 

@@ -73,6 +73,7 @@ type ResolveParams struct {
 	Request *http.Request
 	Writer  http.ResponseWriter
 	Body    []byte
+	Appid   string
 }
 
 func (p *ResolveParams) BodyUnmarshal(i interface{}) {
@@ -121,7 +122,7 @@ func DefApi(pattern string, resolve func(p *ResolveParams) (out interface{}, err
 			panic(err)
 		}
 		hlog.WithField("requestBody", string(body)).Info("请求报文")
-		i, e := resolve(&ResolveParams{Body: body, Request: request, Writer: writer, Context: context.WithValue(context.Background(), "track", track)})
+		i, e := resolve(&ResolveParams{Appid: h.Get("appid"), Body: body, Request: request, Writer: writer, Context: context.WithValue(context.Background(), "track", track)})
 		if e != nil {
 			panic(e)
 		}
