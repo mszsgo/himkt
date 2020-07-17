@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/mszsgo/himkt/errs"
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
@@ -17,14 +18,14 @@ var (
 )
 
 func ResponseSuccess(i interface{}) []byte {
+	suc := fmt.Sprintf(`{"errno":"%s","error":"%s"}`, errs.SUCCESS.Code, errs.SUCCESS.Msg)
 	if i == nil {
-		return []byte("")
+		return []byte(suc)
 	}
 	bytes, err := json.Marshal(i)
 	if err != nil {
 		panic(err)
 	}
-	suc := `{"errno":"00000","error":"ok"}`
 	if len(bytes) > 2 {
 		bytes = append([]byte(suc[0:len(suc)-1]+","), bytes[1:]...)
 	} else {
