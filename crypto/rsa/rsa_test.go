@@ -41,7 +41,7 @@ func TestA(t *testing.T) {
 //RSA公钥私钥产生
 func GenRsaKey() (prvkey, pubkey []byte) {
 	// 生成私钥文件
-	privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
+	privateKey, err := rsa.GenerateKey(rand.Reader, 1024)
 	if err != nil {
 		panic(err)
 	}
@@ -76,13 +76,13 @@ func RsaSignWithSha256(data []byte, keyBytes []byte) []byte {
 	if block == nil {
 		panic(errors.New("private key error"))
 	}
-	privateKey, err := x509.ParsePKCS1PrivateKey(block.Bytes)
+	privateKey, err := x509.ParsePKCS8PrivateKey(block.Bytes)
 	if err != nil {
 		fmt.Println("ParsePKCS8PrivateKey err", err)
 		panic(err)
 	}
 
-	signature, err := rsa.SignPKCS1v15(rand.Reader, privateKey, crypto.SHA256, hashed)
+	signature, err := rsa.SignPKCS1v15(rand.Reader, privateKey.(*rsa.PrivateKey), crypto.SHA256, hashed)
 	if err != nil {
 		fmt.Printf("Error from signing: %s\n", err)
 		panic(err)
@@ -140,12 +140,12 @@ func RsaDecrypt(ciphertext, keyBytes []byte) []byte {
 		panic(errors.New("private key error!"))
 	}
 	//解析PKCS1格式的私钥
-	priv, err := x509.ParsePKCS1PrivateKey(block.Bytes)
+	priv, err := x509.ParsePKCS8PrivateKey(block.Bytes)
 	if err != nil {
 		panic(err)
 	}
 	// 解密
-	data, err := rsa.DecryptPKCS1v15(rand.Reader, priv, ciphertext)
+	data, err := rsa.DecryptPKCS1v15(rand.Reader, priv.(*rsa.PrivateKey), ciphertext)
 	if err != nil {
 		panic(err)
 	}
