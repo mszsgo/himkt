@@ -1,5 +1,0 @@
-package rsa
-
-func Encode() {
-
-}
