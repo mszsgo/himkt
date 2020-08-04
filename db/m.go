@@ -1,6 +1,8 @@
 package db
 
 import (
+	"go.mongodb.org/mongo-driver/x/bsonx"
+	"strings"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -48,6 +50,13 @@ func (f M) Int64(k string, v int64) M {
 func (f M) Time(k string, v time.Time) M {
 	if !v.IsZero() {
 		f[k] = v
+	}
+	return f
+}
+
+func (f M) Regex(k string, v string) M {
+	if strings.TrimSpace(v) != "" {
+		f[k] = bson.M{"$regex": bsonx.Regex(v, "i")}
 	}
 	return f
 }
