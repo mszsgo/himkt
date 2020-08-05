@@ -32,7 +32,7 @@ func Page(c *mongo.Collection, result interface{}, ctx context.Context, filter i
 }
 
 // 分页查询
-func FindPage(ctx context.Context, c *mongo.Collection, filter interface{}, sort bson.M, pageSize, pageNum int64, result interface{}) (total int64, err error) {
+func FindPage(ctx context.Context, c *mongo.Collection, filter interface{}, sort bson.M, pageSize, pageNum int64, result interface{}, fo ...*options.FindOptions) (total int64, err error) {
 	if sort == nil {
 		sort = bson.M{}
 	}
@@ -45,7 +45,9 @@ func FindPage(ctx context.Context, c *mongo.Collection, filter interface{}, sort
 	if pageSize == 0 {
 		pageSize = 20
 	}
-	err = Find(c, result, ctx, filter, options.Find().SetSort(sort).SetSkip(pageSize*(pageNum-1)).SetLimit(pageSize))
+	op := options.Find().SetSort(sort).SetSkip(pageSize * (pageNum - 1)).SetLimit(pageSize)
+	fo = append(fo, op)
+	err = Find(c, result, ctx, filter, fo...)
 	if err != nil {
 		return 0, err
 	}
