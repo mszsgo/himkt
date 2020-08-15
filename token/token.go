@@ -1,9 +1,9 @@
 package token
 
 import (
-	"github.com/mszsgo/himkt/errs"
-	"github.com/mszsgo/himkt/genid"
-	"github.com/mszsgo/himkt/rdb"
+	"himkt/errs"
+	"himkt/genid"
+	"himkt/rdb"
 )
 
 /*

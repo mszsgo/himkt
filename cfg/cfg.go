@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/mszsgo/himkt/env"
-	"github.com/mszsgo/himkt/protocol"
+	"himkt/env"
+	"himkt/protocol"
 	"io/ioutil"
 )
 

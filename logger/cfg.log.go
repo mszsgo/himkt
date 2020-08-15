@@ -2,7 +2,7 @@ package logger
 
 import (
 	"fmt"
-	"github.com/mszsgo/himkt/cfg"
+	"himkt/cfg"
 )
 
 // 阿里云日志服务接入

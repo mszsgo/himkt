@@ -2,7 +2,7 @@ package hmunionpay
 
 import (
 	"context"
-	"github.com/mszsgo/himkt/micro"
+	"himkt/micro"
 )
 
 func HmUnionpayUserGet(ctx context.Context, params *HmUnionpayUserGetParams) (result *HmUnionpayUserGetResult, err error) {

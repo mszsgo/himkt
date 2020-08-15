@@ -2,7 +2,7 @@ package hmweixin
 
 import (
 	"context"
-	"github.com/mszsgo/himkt/micro"
+	"himkt/micro"
 )
 
 func HmWeixinUserGet(ctx context.Context, params *HmWeixinUserGetParams) (result *HmWeixinUserGetResult, err error) {

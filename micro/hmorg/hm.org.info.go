@@ -2,8 +2,8 @@ package hmorg
 
 import (
 	"context"
-	"github.com/mszsgo/himkt/micro"
-	"github.com/mszsgo/himkt/time/t14"
+	"himkt/micro"
+	"himkt/time/t14"
 )
 
 // 查询机构信息

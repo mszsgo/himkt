@@ -1,4 +1,4 @@
-module github.com/mszsgo/himkt
+module himkt
 
 go 1.14
 

@@ -1,10 +1,10 @@
 package himkt
 
 import (
-	"github.com/mszsgo/himkt/cfg"
-	"github.com/mszsgo/himkt/db"
-	"github.com/mszsgo/himkt/env"
-	"github.com/mszsgo/himkt/hm"
+	"himkt/cfg"
+	"himkt/db"
+	"himkt/env"
+	"himkt/hm"
 	"testing"
 )
 

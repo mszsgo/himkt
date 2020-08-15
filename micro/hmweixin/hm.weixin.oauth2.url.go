@@ -2,7 +2,7 @@ package hmweixin
 
 import (
 	"context"
-	"github.com/mszsgo/himkt/micro"
+	"himkt/micro"
 )
 
 func HmWeixinOauth2Url(ctx context.Context, params *HmWeixinOauth2UrlParams) (result *HmWeixinOauth2UrlResult, err error) {

@@ -2,7 +2,7 @@ package hmcaptcha
 
 import (
 	"context"
-	"github.com/mszsgo/himkt/micro"
+	"himkt/micro"
 )
 
 func HmCaptchaCodeVerify(ctx context.Context, params *HmCaptchaCodeVerifyParams) (r *HmCaptchaCodeVerifyResult, err error) {

@@ -2,7 +2,7 @@ package hmmember
 
 import (
 	"context"
-	"github.com/mszsgo/himkt/micro"
+	"himkt/micro"
 )
 
 func HmMemberUserInfo(ctx context.Context, params *HmMemberUserInfoParams) (result *HmMemberUserInfoResult, err error) {

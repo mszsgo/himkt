@@ -3,7 +3,7 @@ package rdb
 import (
 	"context"
 	"github.com/go-redis/redis/v8"
-	"github.com/mszsgo/himkt/cfg"
+	"himkt/cfg"
 	"time"
 )
 

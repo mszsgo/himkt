@@ -5,10 +5,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/mszsgo/himkt/errs"
-	"github.com/mszsgo/himkt/hm"
-	"github.com/mszsgo/himkt/micro/hmopen"
 	log "github.com/sirupsen/logrus"
+	"himkt/errs"
+	"himkt/hm"
+	"himkt/micro/hmopen"
 	"net/url"
 )
 

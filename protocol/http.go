@@ -1,7 +1,7 @@
 package protocol
 
 import (
-	"github.com/mszsgo/himkt/env"
+	"himkt/env"
 	"net/http"
 	"net/url"
 	"time"

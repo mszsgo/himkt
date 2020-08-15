@@ -2,7 +2,7 @@ package hmunionpay
 
 import (
 	"context"
-	"github.com/mszsgo/himkt/micro"
+	"himkt/micro"
 )
 
 func HmUnionpayOauth2(ctx context.Context, params *HmUnionpayOauth2Params) (result *HmUnionpayOauth2Result, err error) {

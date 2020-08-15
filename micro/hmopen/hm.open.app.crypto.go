@@ -2,7 +2,7 @@ package hmopen
 
 import (
 	"context"
-	"github.com/mszsgo/himkt/micro"
+	"himkt/micro"
 	"sync"
 )
 

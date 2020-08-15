@@ -2,7 +2,7 @@ package hmsms
 
 import (
 	"context"
-	"github.com/mszsgo/himkt/micro"
+	"himkt/micro"
 )
 
 // 用于发送验证码类短信
