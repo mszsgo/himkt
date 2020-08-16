@@ -1,6 +1,7 @@
 package tcc
 
 import (
+	log "github.com/sirupsen/logrus"
 	"sync"
 	"time"
 )
@@ -36,32 +37,32 @@ func (o *TccDefaultImpl) Cancel() error {
 	return o.CancelFun()
 }
 
-// 调用TCC处理，按参数顺序执行；
+// 调用TCC处理，按顺序执行函数
 func Tx(ts ...TccInterface) (err error) {
 	var (
 		chtcc = make(map[int]chan bool)
-		che   = make(chan error, 1)
+		cherr = make(chan error, 1)
+		wg    = &sync.WaitGroup{}
 	)
 
 	// 任务顺序执行
-	var wg = &sync.WaitGroup{}
 	for i, job := range ts {
 		wg.Add(1)
 		chtcc[i] = make(chan bool, 1)
-		go Job(chtcc[i], che, wg, job)
+		go Job(chtcc[i], cherr, wg, job)
 		wg.Wait()
-		//判断是否异常
-		if len(che) > 0 {
-			// 异常，结束任务
-			err = <-che
-			// 执行cancel
+		// 如果异常，结束任务
+		if len(cherr) > 0 {
+			// error
+			err = <-cherr
+			// cancel
 			for _, v := range chtcc {
 				v <- false
 			}
 			return err
 		}
 	}
-	// 判断是否都执行完成，执行确认操作
+	// confirm
 	for _, v := range chtcc {
 		v <- true
 	}
@@ -96,14 +97,13 @@ func Job(chtcc <-chan bool, cherr chan<- error, wg *sync.WaitGroup, tcc TccInter
 
 // 重试操作
 func Retry(f func() error) {
-	retry := 5
+	retry := 3
 	for i := 0; i < retry; i++ {
 		e := f()
 		if e == nil {
 			break
 		}
-		if e != nil {
-			time.Sleep(1 * time.Second)
-		}
+		log.Error("tx.Retry Error => " + e.Error())
+		time.Sleep(time.Duration(i+1) * time.Second)
 	}
 }
