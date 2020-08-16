@@ -36,7 +36,7 @@ func (o *TccDefaultImpl) Cancel() error {
 	return o.CancelFun()
 }
 
-// 多个接口调用TCC处理，按参数顺序执行；
+// 调用TCC处理，按参数顺序执行；
 func Tx(ts ...TccInterface) (err error) {
 	var (
 		chtcc = make(map[int]chan bool)
