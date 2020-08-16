@@ -1,7 +1,9 @@
 package tcc
 
-// 创建tcc表，记录事务状态，确认操作或者取消操作不成功，继续重试。
+/* 2020.08.16 弃用此文件与函数 */
 
+// 创建tcc表，记录事务状态，确认操作或者取消操作不成功，继续重试。
+/*
 type Tcc interface {
 	Try() error
 	Confirm() error
@@ -28,4 +30,6 @@ func Transaction(tcc Tcc) error {
 		}
 	}
 
+	return nil
 }
+*/
