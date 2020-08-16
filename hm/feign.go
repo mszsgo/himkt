@@ -23,10 +23,19 @@ func Post(ctx context.Context, url string, body string) ([]byte, error) {
 	}
 	var client = protocol.HttpClient()
 
+	if ctx != nil {
+		appid := ctx.Value("appid")
+		if appid != nil && appid != "" {
+			request.Header.Set("appid", appid.(string))
+		}
+		ctxClient := ctx.Value("client")
+		if ctxClient != nil {
+			client = ctxClient.(*http.Client)
+		}
+	}
+
 	// ctx 不等于空时，读取header与client
 	if ctx != nil {
-		request.Header.Set("appid", ctx.Value("appid").(string))
-
 		ctxTrack := ctx.Value("track")
 		var track *Track
 		if ctxTrack != nil {
@@ -39,11 +48,6 @@ func Post(ctx context.Context, url string, body string) ([]byte, error) {
 		}
 		request.Header.Set("sid", track.Sid)
 		request.Header.Set("pid", track.Tid)
-
-		ctxClient := ctx.Value("client")
-		if ctxClient != nil {
-			client = ctxClient.(*http.Client)
-		}
 	}
 	request.Header.Set("tid", genid.UUID())
 	response, err := client.Do(request)
