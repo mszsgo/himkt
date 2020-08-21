@@ -7,6 +7,7 @@ import (
 	"fmt"
 	log "github.com/sirupsen/logrus"
 	"himkt/errs"
+	"himkt/token"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -78,6 +79,13 @@ type ResolveParams struct {
 
 func (p *ResolveParams) BodyUnmarshal(i interface{}) {
 	err := json.Unmarshal(p.Body, i)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func (p *ResolveParams) VerifyToken(tokenVal, uidVal string) {
+	err := token.Verify(tokenVal, uidVal)
 	if err != nil {
 		panic(err)
 	}
