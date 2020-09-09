@@ -19,6 +19,13 @@ func (f M) M(k string, v M) M {
 	return f
 }
 
+func (f M) A(k string, v bson.A) M {
+	if len(v) > 0 {
+		f[k] = v
+	}
+	return f
+}
+
 func (f M) Str(k string, v string) M {
 	if v != "" {
 		f[k] = v
@@ -57,6 +64,18 @@ func (f M) Time(k string, v time.Time) M {
 func (f M) Regex(k string, v string) M {
 	if strings.TrimSpace(v) != "" {
 		f[k] = bson.M{"$regex": bsonx.Regex(v, "i")}
+	}
+	return f
+}
+
+// $in 查询，一般 args为字符串数组或者数字数组
+func (f M) In(k string, args ...interface{}) M {
+	if len(args) > 0 {
+		bsona := bson.A{}
+		for _, item := range args {
+			bsona = append(bsona, item)
+		}
+		f[k] = bson.M{"$in": bsona}
 	}
 	return f
 }
