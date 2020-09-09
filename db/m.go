@@ -68,8 +68,7 @@ func (f M) Regex(k string, v string) M {
 	return f
 }
 
-// $in 查询，一般 args为字符串数组或者数字数组
-func (f M) In(k string, args ...interface{}) M {
+func (f M) InStr(k string, args ...string) M {
 	if len(args) > 0 {
 		bsona := bson.A{}
 		for _, item := range args {
