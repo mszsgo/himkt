@@ -73,6 +73,9 @@ func Post(ctx context.Context, url string, body string) ([]byte, error) {
 }
 
 func Do(ctx context.Context, method string, body string) ([]byte, error) {
+	if method == "" {
+		return nil, errors.New("接口名称不能为空")
+	}
 	name := strings.Split(method, ".")[1]
 	url := "http://" + name + "/" + method
 	return Post(ctx, url, body)
