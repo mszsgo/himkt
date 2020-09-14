@@ -11,6 +11,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -54,7 +55,7 @@ func ResponseWriter(writer http.ResponseWriter, status int, content []byte) {
 func post(handle http.Handler) http.Handler {
 	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "application/json;charset=utf-8")
-		if request.Method != "POST" {
+		if strings.ToUpper(request.Method) != "POST" {
 			ResponseWriter(writer, 500, ResponseFail(ERR_HTTP_METHOD))
 			return
 		}
