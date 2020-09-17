@@ -1,34 +1,12 @@
 package hmopen
 
 import (
-	"errors"
 	"himkt/hm"
 )
 
-var (
-	amap map[string]string
-)
-
-func getEncryptSecret(appid string) (string, error) {
-	if appid == "" {
-		return "", errors.New("平台appid不能为空")
-	}
-	secret := amap[appid]
-	if secret != "" {
-		return secret, nil
-	}
-	r, err := GetOpenApp(appid, false)
-	if err != nil {
-		return "", err
-	}
-	amap[appid] = r.DesKey
-	secret = r.DesKey
-	return secret, nil
-}
-
 // DES+MD5接口报文加密
 func EncryptDesMd5(s, appid string) (v string, err error) {
-	key, err := getEncryptSecret(appid)
+	key, err := GetDesKey(appid)
 	if err != nil {
 		return
 	}
@@ -37,8 +15,7 @@ func EncryptDesMd5(s, appid string) (v string, err error) {
 		return
 	}
 
-	amap[appid] = ""
-	key, err = getEncryptSecret(appid)
+	key, err = GetDesKeyN(appid)
 	if err != nil {
 		return
 	}
@@ -48,7 +25,7 @@ func EncryptDesMd5(s, appid string) (v string, err error) {
 
 // DES+MD5接口报文解密
 func DecryptDesMd5(s, appid string) (v string, err error) {
-	key, err := getEncryptSecret(appid)
+	key, err := GetDesKey(appid)
 	if err != nil {
 		return
 	}
@@ -57,8 +34,7 @@ func DecryptDesMd5(s, appid string) (v string, err error) {
 		return
 	}
 
-	amap[appid] = ""
-	key, err = getEncryptSecret(appid)
+	key, err = GetDesKeyN(appid)
 	if err != nil {
 		return
 	}

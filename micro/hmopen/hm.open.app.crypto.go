@@ -2,6 +2,7 @@ package hmopen
 
 import (
 	"context"
+	"errors"
 	"himkt/micro"
 	"sync"
 )
@@ -10,20 +11,29 @@ var (
 	apps sync.Map
 )
 
-func GetOpenApp(appid string, readCache bool) (r *HmOpenAppCryptoResult, err error) {
-	if readCache {
-		value, ok := apps.Load(appid)
-		if ok {
-			r = value.(*HmOpenAppCryptoResult)
-			return
-		}
+func GetDesKey(appid string) (desKey string, err error) {
+	if appid == "" {
+		return "", errors.New("平台appid不能为空")
 	}
-	r, err = HmOpenAppCrypto(nil, &HmOpenAppCryptoParams{Appid: appid})
+	val, ok := apps.Load(appid)
+	if ok {
+		desKey = val.(string)
+		return
+	}
+	desKey, err = GetDesKeyN(appid)
 	if err != nil {
 		return
 	}
-	apps.Store(appid, r)
 	return
+}
+
+func GetDesKeyN(appid string) (desKey string, err error) {
+	r, err := HmOpenAppCrypto(nil, &HmOpenAppCryptoParams{Appid: appid})
+	if err != nil {
+		return
+	}
+	apps.Store(appid, r.DesKey)
+	return r.DesKey, err
 }
 
 func HmOpenAppCrypto(ctx context.Context, params *HmOpenAppCryptoParams) (result *HmOpenAppCryptoResult, err error) {
