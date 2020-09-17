@@ -1,6 +1,7 @@
 package hmopen
 
 import (
+	"errors"
 	"himkt/hm"
 )
 
@@ -9,6 +10,9 @@ var (
 )
 
 func getEncryptSecret(appid string) (string, error) {
+	if appid == "" {
+		return "", errors.New("平台appid不能为空")
+	}
 	secret := amap[appid]
 	if secret != "" {
 		return secret, nil
